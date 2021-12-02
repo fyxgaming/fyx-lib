@@ -1,6 +1,6 @@
 {
   "name": "@fyxgaming/lib",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Fyx library",
   "private": false,
   "main": "index.js",
