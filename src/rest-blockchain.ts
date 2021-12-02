@@ -63,11 +63,6 @@ export class RestBlockchain implements IBlockchain {
         return this.requests.get(txid);
     };
 
-    async time(txid: string): Promise<number> {
-        const { data: { time } } = await axios(`${this.apiUrl}/tx/${txid}`);
-        return time;
-    }
-
     async spends(txid: string, vout: number): Promise<string | null> {
         if (this.debug) console.log('SPENDS:', txid, vout);
         const cacheKey = `spend://${txid}_o${vout}`;

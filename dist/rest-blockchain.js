@@ -62,10 +62,6 @@ class RestBlockchain {
         return this.requests.get(txid);
     }
     ;
-    async time(txid) {
-        const { data: { time } } = await (0, fyx_axios_1.default)(`${this.apiUrl}/tx/${txid}`);
-        return time;
-    }
     async spends(txid, vout) {
         if (this.debug)
             console.log('SPENDS:', txid, vout);

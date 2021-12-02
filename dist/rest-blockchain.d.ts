@@ -20,7 +20,6 @@ export declare class RestBlockchain implements IBlockchain {
     broadcast(rawtx: any): Promise<any>;
     retrieveOutputs(tx: Tx): Promise<[unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown]>;
     fetch(txid: string): Promise<any>;
-    time(txid: string): Promise<number>;
     spends(txid: string, vout: number): Promise<string | null>;
     utxos(owner: string, ownerType?: string, limit?: number): Promise<IUTXO[]>;
     utxoCount(script: string): Promise<number>;

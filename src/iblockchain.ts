@@ -5,7 +5,6 @@ export interface IBlockchain {
     network: string;
     broadcast(rawtx: any): Promise<any>;
     fetch(txid: string): Promise<any>;
-    time(txid: string): Promise<number>;
     spends(txid: string, vout: number): Promise<string | null>;
     utxos(script: string, ownerType?: string, limit?: number): Promise<IUTXO[]>;
     utxoCount(script: string): Promise<number>;
