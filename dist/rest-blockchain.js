@@ -62,6 +62,9 @@ class RestBlockchain {
         return this.requests.get(txid);
     }
     ;
+    async time(txid) {
+        return Date.now();
+    }
     async spends(txid, vout) {
         if (this.debug)
             console.log('SPENDS:', txid, vout);
