@@ -41,7 +41,7 @@ export class FyxOwner {
             `${this.apiUrl}/accounts/${this.fyxId}/${this.userId}/derivations`,
             new SignedMessage({subject: 'LoadDerivations'}, this.userId, this.keyPair)
         )
-        console.log('Derivations:', derivations);
+        // console.log('Derivations:', derivations);
         derivations.forEach(d => {
             if (this.keyPairs.has(d.script)) return;
             this.keyPairs.set(d.script, KeyPair.fromPrivKey(this.bip32.derive(d.path).privKey));
@@ -62,14 +62,14 @@ export class FyxOwner {
             const txOut = TxOut.fromProperties(new Bn(parents[i].satoshis), lockScript);
             const keyPair = this.keyPairs.get(txOut.script.toHex());
             if (!keyPair) {
-                console.log('Missing Keypair:', txOut.script.toHex())
+                // console.log('Missing Keypair:', txOut.script.toHex())
                 return;
             }
             const sig = await tx.asyncSign(keyPair, Sig.SIGHASH_ALL | Sig.SIGHASH_FORKID, i, txOut.script, txOut.valueBn);
             txIn.setScript(new Script().writeBuffer(sig.toTxFormat()).writeBuffer(keyPair.pubKey.toBuffer()));
         }));
 
-        console.log('Signed TX:', tx.toString());
+        // console.log('Signed TX:', tx.toString());
         return tx.toHex();
     }
 
