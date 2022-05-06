@@ -1,18 +1,18 @@
 import axios from 'axios';
-import { Address, Script } from 'bsv';
+import { Address, Script, Tx } from 'bsv';
 import { createHash } from 'crypto';
 import { IUTXO } from './interfaces';
 
 export class PaymentIO {
     script: Buffer;
-    amount: number;
+    satoshis: number;
     splitSats?: number;
     maxSplits?: number;
 
     static serialize(io: PaymentIO): {[key: string]: any} {
         return {
             s: io.script.toString('base64'),
-            i: io.amount,
+            i: io.satoshis,
             ss: io.splitSats || 0,
             ms: io.maxSplits || 0
         };
@@ -109,9 +109,32 @@ export class RestBlockchain {
         return balance;
     }
 
-    async applyPayments(): Promise<any> {
-        throw new Error('applyPayments Not Implemented');
-    };
+    async loadParents(rawtx: string): Promise<{ script: string, satoshis: number }[]> {
+        const tx = Tx.fromHex(rawtx);
+        return Promise.all(tx.txIns.map(async txIn => {
+            const txid = Buffer.from(txIn.txHashBuf).reverse().toString('hex');
+            const rawtx = await this.fetch(txid);
+            const t = Tx.fromHex(rawtx);
+            const txOut = t.txOuts[txIn.txOutNum]
+            return { script: txOut.script.toHex(), satoshis: txOut.valueBn.toNumber() };
+        }))
+    }
+
+    async applyPayments(rawtx, payments: { from: string, amount: number }[], payer?: string, changeSplitSats = 0, satsPerByte = 0.25) {
+        const { data } = await axios.post(`${this.apiUrl}/pay`, PaymentRequest.serialize({
+            rawtx: Buffer.from(rawtx, 'hex'),
+            io: payments.map(p => ({
+                script: Address.fromString(p.from).toTxOutScript().toBuffer(),
+                satoshis: p.amount
+            })),
+            feeIo: {
+                script: Address.fromString(payer).toTxOutScript().toBuffer(),
+                satoshis: 0
+            }
+        }));
+
+        return data.toString('hex');
+    }
 
     async buildPayments(req: PaymentRequest): Promise<Buffer> {
         const { data: outTx } = await axios.post(`${this.apiUrl}/pay`, PaymentRequest.serialize(req));

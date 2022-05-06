@@ -2,7 +2,7 @@
 import { IUTXO } from './interfaces';
 export declare class PaymentIO {
     script: Buffer;
-    amount: number;
+    satoshis: number;
     splitSats?: number;
     maxSplits?: number;
     static serialize(io: PaymentIO): {
@@ -27,6 +27,13 @@ export declare class RestBlockchain {
     utxos(scriptHex: string): Promise<IUTXO[]>;
     utxoCount(scriptHex: string): Promise<number>;
     balance(scriptHex: string): Promise<number>;
-    applyPayments(): Promise<any>;
+    loadParents(rawtx: string): Promise<{
+        script: string;
+        satoshis: number;
+    }[]>;
+    applyPayments(rawtx: any, payments: {
+        from: string;
+        amount: number;
+    }[], payer?: string, changeSplitSats?: number, satsPerByte?: number): Promise<any>;
     buildPayments(req: PaymentRequest): Promise<Buffer>;
 }

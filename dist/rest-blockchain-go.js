@@ -11,7 +11,7 @@ class PaymentIO {
     static serialize(io) {
         return {
             s: io.script.toString('base64'),
-            i: io.amount,
+            i: io.satoshis,
             ss: io.splitSats || 0,
             ms: io.maxSplits || 0
         };
@@ -99,10 +99,30 @@ class RestBlockchain {
         const { data: balance } = await (0, axios_1.default)(`${this.apiUrl}/utxos/${scripthash.toString('hex')}/balance`);
         return balance;
     }
-    async applyPayments() {
-        throw new Error('applyPayments Not Implemented');
+    async loadParents(rawtx) {
+        const tx = bsv_1.Tx.fromHex(rawtx);
+        return Promise.all(tx.txIns.map(async (txIn) => {
+            const txid = Buffer.from(txIn.txHashBuf).reverse().toString('hex');
+            const rawtx = await this.fetch(txid);
+            const t = bsv_1.Tx.fromHex(rawtx);
+            const txOut = t.txOuts[txIn.txOutNum];
+            return { script: txOut.script.toHex(), satoshis: txOut.valueBn.toNumber() };
+        }));
     }
-    ;
+    async applyPayments(rawtx, payments, payer, changeSplitSats = 0, satsPerByte = 0.25) {
+        const { data } = await axios_1.default.post(`${this.apiUrl}/pay`, PaymentRequest.serialize({
+            rawtx: Buffer.from(rawtx, 'hex'),
+            io: payments.map(p => ({
+                script: bsv_1.Address.fromString(p.from).toTxOutScript().toBuffer(),
+                satoshis: p.amount
+            })),
+            feeIo: {
+                script: bsv_1.Address.fromString(payer).toTxOutScript().toBuffer(),
+                satoshis: 0
+            }
+        }));
+        return data.toString('hex');
+    }
     async buildPayments(req) {
         const { data: outTx } = await axios_1.default.post(`${this.apiUrl}/pay`, PaymentRequest.serialize(req));
         return outTx;
