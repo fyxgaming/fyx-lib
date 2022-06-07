@@ -9,7 +9,7 @@ export class PaymentIO {
     splitSats?: number;
     maxSplits?: number;
 
-    static serialize(io: PaymentIO): {[key: string]: any} {
+    static serialize(io: PaymentIO): { [key: string]: any } {
         return {
             s: io.script.toString('base64'),
             i: io.satoshis,
@@ -121,23 +121,25 @@ export class RestBlockchain {
     }
 
     async applyPayments(rawtx, payments: { from: string, amount: number }[], payer?: string, changeSplitSats = 0, satsPerByte = 0.25) {
-        const { data } = await axios.post(`${this.apiUrl}/pay`, PaymentRequest.serialize({
-            rawtx: Buffer.from(rawtx, 'hex'),
-            io: payments.map(p => ({
-                script: Address.fromString(p.from).toTxOutScript().toBuffer(),
-                satoshis: p.amount
-            })),
-            feeIo: {
-                script: Address.fromString(payer).toTxOutScript().toBuffer(),
-                satoshis: 0
-            }
-        }));
-
+        const { data } = await axios.post(
+            `${this.apiUrl}/pay`,
+            PaymentRequest.serialize({
+                rawtx: Buffer.from(rawtx, 'hex'),
+                io: payments.map(p => ({
+                    script: Address.fromString(p.from).toTxOutScript().toBuffer(),
+                    satoshis: p.amount
+                })),
+                feeIo: {
+                    script: Address.fromString(payer).toTxOutScript().toBuffer(),
+                    satoshis: 0
+                }
+            }),
+            { responseType: 'arraybuffer' });
         return data.toString('hex');
     }
 
     async buildPayments(req: PaymentRequest): Promise<Buffer> {
-        const { data: outTx } = await axios.post(`${this.apiUrl}/pay`, PaymentRequest.serialize(req));
-        return outTx;
+        const { data } = await axios.post(`${this.apiUrl}/pay`, PaymentRequest.serialize(req));
+        return data;
     }
 }

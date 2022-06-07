@@ -120,12 +120,12 @@ class RestBlockchain {
                 script: bsv_1.Address.fromString(payer).toTxOutScript().toBuffer(),
                 satoshis: 0
             }
-        }));
+        }), { responseType: 'arraybuffer' });
         return data.toString('hex');
     }
     async buildPayments(req) {
-        const { data: outTx } = await axios_1.default.post(`${this.apiUrl}/pay`, PaymentRequest.serialize(req));
-        return outTx;
+        const { data } = await axios_1.default.post(`${this.apiUrl}/pay`, PaymentRequest.serialize(req));
+        return data;
     }
 }
 exports.RestBlockchain = RestBlockchain;
