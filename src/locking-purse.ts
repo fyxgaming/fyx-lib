@@ -8,7 +8,7 @@ export class LockingPurse {
         public keyPair: KeyPair, 
         public blockchain: IBlockchain, 
         public changeSplitSats = 250000,
-        public satsPerByte = 0.25
+        public satsPerByte = 0.05
     ) {
         const address = Address.fromPrivKey(keyPair.privKey);
         this.script = address.toTxOutScript().toHex();
