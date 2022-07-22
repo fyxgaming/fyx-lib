@@ -15,14 +15,14 @@ class RestStateCache {
     async get(key) {
         if (this.debug)
             console.log('State:', key);
-        if (key.startsWith('ban://') || key.startsWith('trust://'))
-            return;
         let value = await this.cache.get(key);
         if (value) {
             if (this.debug)
                 console.log('Cache Hit:', key);
             return value;
         }
+        if (!key.startsWith('jig://'))
+            return;
         if (!this.requests.has(key)) {
             const request = (async () => {
                 let value;
@@ -45,7 +45,7 @@ class RestStateCache {
         return this.requests.get(key);
     }
     async set(key, value) {
-        if (key.startsWith('ban://') || key.startsWith('trust://'))
+        if (!key.startsWith('jig://'))
             return;
         await this.cache.set(key, value);
     }

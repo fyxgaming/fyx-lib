@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LockingPurse = void 0;
 const bsv_1 = require("bsv");
 class LockingPurse {
-    constructor(keyPair, blockchain, changeSplitSats = 250000, satsPerByte = 0.25) {
+    constructor(keyPair, blockchain, changeSplitSats = 250000, satsPerByte = 0.05) {
         this.keyPair = keyPair;
         this.blockchain = blockchain;
         this.changeSplitSats = changeSplitSats;
