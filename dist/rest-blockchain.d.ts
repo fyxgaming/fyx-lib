@@ -1,4 +1,4 @@
-import { Tx } from 'bsv';
+import { Tx } from 'bsv2';
 import { IBlockchain } from './iblockchain';
 import { IUTXO } from './interfaces';
 import { SignedMessage } from './signed-message';

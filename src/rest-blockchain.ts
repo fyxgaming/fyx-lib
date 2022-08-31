@@ -1,4 +1,4 @@
-import { Br, Tx } from 'bsv';
+import { Br, Tx } from 'bsv2';
 import { Buffer } from 'buffer';
 import axios from './fyx-axios';
 import { IBlockchain } from './iblockchain';

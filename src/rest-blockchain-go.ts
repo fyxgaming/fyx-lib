@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Address, Script, Tx } from 'bsv';
+import { Address, Script, Tx } from 'bsv2';
 import { createHash } from 'crypto';
 import { IUTXO } from './interfaces';
 

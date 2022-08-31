@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Address, Bn, Bw, KeyPair, Script, Sig, Tx, TxOut } from 'bsv';
+import { Address, Bn, Bw, KeyPair, Script, Sig, Tx, TxOut } from 'bsv2';
 import { SignedMessage } from './signed-message';
 import orderLockRegex from './order-lock-regex';
 

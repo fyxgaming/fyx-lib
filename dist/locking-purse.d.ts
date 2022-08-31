@@ -1,4 +1,4 @@
-import { KeyPair } from 'bsv';
+import { KeyPair } from 'bsv2';
 import { IBlockchain } from './iblockchain';
 export declare class LockingPurse {
     keyPair: KeyPair;

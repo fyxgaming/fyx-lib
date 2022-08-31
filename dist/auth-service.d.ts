@@ -1,4 +1,4 @@
-import { Bip32, KeyPair } from 'bsv';
+import { Bip32, KeyPair } from 'bsv2';
 export declare class AuthService {
     private apiUrl;
     private network;

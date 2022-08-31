@@ -1,5 +1,5 @@
 import * as argon2 from 'argon2-browser';
-import { Bip32, Bip39, Bn, Constants, Ecdsa, Ecies, Hash, KeyPair, Point, PrivKey } from 'bsv';
+import { Bip32, Bip39, Bn, Constants, Ecdsa, Ecies, Hash, KeyPair, Point, PrivKey } from 'bsv2';
 import axios from './fyx-axios';
 import { SignedMessage } from './signed-message';
 import { Buffer } from 'buffer';

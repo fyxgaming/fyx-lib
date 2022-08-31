@@ -1,4 +1,4 @@
-import { KeyPair, Script, Tx } from 'bsv';
+import { KeyPair, Script, Tx } from 'bsv2';
 import { IBlockchain } from './iblockchain';
 import { LockingPurse } from './locking-purse';
 import orderLockRegex from './order-lock-regex';

@@ -1,4 +1,4 @@
-import { KeyPair } from 'bsv';
+import { KeyPair } from 'bsv2';
 export declare class FyxOwner {
     apiUrl: string;
     private bip32;

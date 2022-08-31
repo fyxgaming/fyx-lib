@@ -1,4 +1,4 @@
-import { KeyPair, PubKey } from 'bsv';
+import { KeyPair, PubKey } from 'bsv2';
 export declare class SignedMessage {
     from: string;
     to: string[];

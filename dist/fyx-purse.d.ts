@@ -1,4 +1,4 @@
-import { KeyPair } from 'bsv';
+import { KeyPair } from 'bsv2';
 import { IBlockchain } from './iblockchain';
 import { LockingPurse } from './locking-purse';
 export declare class FyxPurse extends LockingPurse {

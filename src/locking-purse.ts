@@ -1,4 +1,4 @@
-import { Address, Bn, KeyPair, Script, Sig, Tx, TxOut } from 'bsv';
+import { Address, Bn, KeyPair, Script, Sig, Tx, TxOut } from 'bsv2';
 import { IBlockchain } from './iblockchain';
 
 export class LockingPurse {
